@@ -122,14 +122,15 @@ end
 
 desc 'Generate native bindings with Rust bindgen'
 task :bindgen do
-  bindgen = IO.popen(%w[
+  bindgen = %w[
     bindgen --use-core
     --allowlist-function sysdir.*
     --allowlist-type sysdir.*
     --allowlist-var PATH_MAX
     --rustified-enum sysdir.*
-		cext/sysdir.h
-  ])
+    cext/sysdir.h
+  ]
+  bindgen_io = IO.popen(bindgen)
   File.open('src/sys.rs', 'w') do |f|
     f.puts <<~HEADER
       // @generated
@@ -146,7 +147,7 @@ task :bindgen do
     HEADER
     f.puts ''
 
-    IO.copy_stream(bindgen, f)
+    IO.copy_stream(bindgen_io, f)
   end
 end
 
