@@ -122,14 +122,32 @@ end
 
 desc 'Generate native bindings with Rust bindgen'
 task :bindgen do
-  bindgen = open("|bindgen --use-core \
-    --allowlist-function 'sysdir.*' \
-    --allowlist-type 'sysdir.*' \
-    --allowlist-var 'PATH_MAX' \
-    --rustified-enum 'sysdir.*' \
-		cext/sysdir.h"
-  )
-  IO.copy_stream(bindgen, "src/sys.rs")
+  bindgen = IO.popen(%w[
+    bindgen --use-core
+    --allowlist-function sysdir.*
+    --allowlist-type sysdir.*
+    --allowlist-var PATH_MAX
+    --rustified-enum sysdir.*
+		cext/sysdir.h
+  ])
+  File.open('src/sys.rs', 'w') do |f|
+    f.puts <<~HEADER
+      // @generated
+      //
+      // src/sys.rs
+      //
+      // Copyright (c) 2023 Ryan Lopopolo <rjl@hyperbo.la>
+      //
+      // Licensed under the Apache License, Version 2.0 <LICENSE-APACHE> or
+      // <http://www.apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT>
+      // or <http://opensource.org/licenses/MIT>, at your option. All files in the
+      // project carrying such notice may not be copied, modified, or distributed
+      // except according to those terms.
+    HEADER
+    f.puts ''
+
+    IO.copy_stream(bindgen, f)
+  end
 end
 
 desc 'Extract sysdir(3) man page'
