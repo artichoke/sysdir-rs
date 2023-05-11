@@ -1,9 +1,46 @@
 [package]
 name = "sysdir"
-version = "0.1.0"
-edition = "2021"
+version = "1.0.0" # remember to set `html_root_url` in `src/lib.rs`.
+authors = ["Ryan Lopopolo <rjl@hyperbo.la>"]
 license = "Apache-2.0 OR MIT"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+edition = "2021"
+rust-version = "1.64.0"
+readme = "README.md"
+repository = "https://github.com/artichoke/sysdir-rs"
+documentation = "https://docs.rs/sysdir"
+homepage = "https://github.com/artichoke/sysdir-rs"
+description = "Rust bindings to sysdir(3) on macOS, iOS, tvOS, and watchOS"
+keywords = ["app_dirs", "apple", "known-folder", "path", "sysdir"]
+categories = ["api-bindings", "filesystem", "os::macos-apis"]
+include = ["cext/**/*", "src/**/*", "tests/**/*", "LICENSE-*", "README.md", "sysdir.3.man"]
 
 [dependencies]
+
+[dev-dependencies]
+
+# Check that crate versions are properly updated in documentation and code when
+# bumping the version.
+[dev-dependencies.version-sync]
+version = "0.9.4"
+default-features = false
+features = ["markdown_deps_updated", "html_root_url_updated"]
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]
+targets = [
+  # Tier 1
+  "x86_64-apple-darwin",
+  # Tier 2
+  "aarch64-apple-darwin",
+  #  "aarch64-apple-ios",
+  #  "aarch64-apple-ios-sim",
+  # Tier 3
+  #  "aarch64-apple-ios-macabi",
+  #  "aarch64-apple-tvos",
+  #  "aarch64-apple-watchos-sim",
+  #  "arm64_32-apple-watchos",
+  #  "armv7k-apple-watchos",
+  #  "aarch64-apple-watchos-sim",
+  #  "x86_64-apple-watchos-sim",
+  #  "x86_64h-apple-darwin",
+]

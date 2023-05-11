@@ -73,6 +73,11 @@
 //! ```
 
 #![no_std]
+#![doc(html_root_url = "https://docs.rs/sysdir/1.0.0")]
+
+// Ensure code blocks in `README.md` compile
+#[doc = include_str!("../README.md")]
+mod readme {}
 
 /// man page for `sysdir(3)`.
 ///
