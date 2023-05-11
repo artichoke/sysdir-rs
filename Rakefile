@@ -119,3 +119,29 @@ namespace :release do
     end
   end
 end
+
+desc 'Generate native bindings with Rust bindgen'
+task :bindgen do
+  bindgen = open("|bindgen --use-core \
+    --allowlist-function 'sysdir.*' \
+    --allowlist-type 'sysdir.*' \
+    --allowlist-var 'PATH_MAX' \
+    --rustified-enum 'sysdir.*' \
+		cext/sysdir.h"
+  )
+  IO.copy_stream(bindgen, "src/sys.rs")
+end
+
+desc 'Extract sysdir(3) man page'
+task :manpage do
+  IO.popen(%w[man sysdir]) do |man_io|
+    IO.popen(%w[col -bx], 'r+') do |col_io|
+      IO.copy_stream(man_io, col_io)
+
+      man_io.close_read
+      col_io.close_write
+
+      IO.copy_stream(col_io, 'sysdir.3.man')
+    end
+  end
+end
