@@ -127,7 +127,7 @@ task :bindgen do
     --allowlist-function sysdir.*
     --allowlist-type sysdir.*
     --allowlist-var PATH_MAX
-    --rustified-enum sysdir.*
+    --default-enum-style rust_non_exhaustive
     cext/sysdir.h
   ]
   bindgen_io = IO.popen(bindgen)

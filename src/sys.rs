@@ -14,6 +14,7 @@
 
 pub const PATH_MAX: u32 = 1024;
 #[repr(u32)]
+#[non_exhaustive]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum sysdir_search_path_directory_t {
     SYSDIR_DIRECTORY_APPLICATION = 1,
@@ -42,6 +43,7 @@ pub enum sysdir_search_path_directory_t {
     SYSDIR_DIRECTORY_ALL_LIBRARIES = 101,
 }
 #[repr(u32)]
+#[non_exhaustive]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum sysdir_search_path_domain_mask_t {
     SYSDIR_DOMAIN_MASK_USER = 1,
