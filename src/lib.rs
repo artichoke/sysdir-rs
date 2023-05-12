@@ -55,7 +55,7 @@
 //! let mut path = [0; PATH_MAX as usize];
 //!
 //! let dir = sysdir_search_path_directory_t::SYSDIR_DIRECTORY_USER;
-//! let domain_mask = sysdir_search_path_domain_mask_t::SYSDIR_DOMAIN_MASK_LOCAL;
+//! let domain_mask = SYSDIR_DOMAIN_MASK_LOCAL;
 //!
 //! unsafe {
 //!     let mut state = sysdir_start_search_path_enumeration(dir, domain_mask);
@@ -124,7 +124,7 @@ mod tests {
         let mut path = [0; PATH_MAX as usize];
 
         let dir = sysdir_search_path_directory_t::SYSDIR_DIRECTORY_USER;
-        let domain_mask = sysdir_search_path_domain_mask_t::SYSDIR_DOMAIN_MASK_LOCAL;
+        let domain_mask = SYSDIR_DOMAIN_MASK_LOCAL;
 
         unsafe {
             let mut state = sysdir_start_search_path_enumeration(dir, domain_mask);

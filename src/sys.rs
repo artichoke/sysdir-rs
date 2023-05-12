@@ -42,16 +42,12 @@ pub enum sysdir_search_path_directory_t {
     SYSDIR_DIRECTORY_ALL_APPLICATIONS = 100,
     SYSDIR_DIRECTORY_ALL_LIBRARIES = 101,
 }
-#[repr(u32)]
-#[non_exhaustive]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum sysdir_search_path_domain_mask_t {
-    SYSDIR_DOMAIN_MASK_USER = 1,
-    SYSDIR_DOMAIN_MASK_LOCAL = 2,
-    SYSDIR_DOMAIN_MASK_NETWORK = 4,
-    SYSDIR_DOMAIN_MASK_SYSTEM = 8,
-    SYSDIR_DOMAIN_MASK_ALL = 65535,
-}
+pub const SYSDIR_DOMAIN_MASK_USER: sysdir_search_path_domain_mask_t = 1;
+pub const SYSDIR_DOMAIN_MASK_LOCAL: sysdir_search_path_domain_mask_t = 2;
+pub const SYSDIR_DOMAIN_MASK_NETWORK: sysdir_search_path_domain_mask_t = 4;
+pub const SYSDIR_DOMAIN_MASK_SYSTEM: sysdir_search_path_domain_mask_t = 8;
+pub const SYSDIR_DOMAIN_MASK_ALL: sysdir_search_path_domain_mask_t = 65535;
+pub type sysdir_search_path_domain_mask_t = ::core::ffi::c_uint;
 pub type sysdir_search_path_enumeration_state = ::core::ffi::c_uint;
 extern "C" {
     pub fn sysdir_start_search_path_enumeration(
