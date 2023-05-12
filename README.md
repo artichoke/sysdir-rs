@@ -11,8 +11,8 @@
 Enumeration of the filesystem paths for the various standard system directories
 where apps, resources, etc. get installed.
 
-This crate provides native bindings to `sysdir(3)` library functions on macOS,
-iOS, tvOS, and watchOS.
+This crate exposes Rust bindings to the `sysdir(3)` library functions provided
+by `libSystem.dylib` on macOS, iOS, tvOS, and watchOS.
 
 The `sysdir` API first appeared in OS X 10.12, iOS 10, watchOS 3 and tvOS 10
 replacing the deprecated `NSSystemDirectories(3)` API.

@@ -30,7 +30,7 @@
 //! directories where apps, resources, etc. get installed.
 //!
 //! This crate exposes Rust bindings to the `sysdir(3)` library functions
-//! provided by `libSystem.dylib`.
+//! provided by `libSystem.dylib` on macOS, iOS, tvOS, and watchOS.
 //!
 //! For more detailed documentation, refer to the [`sysdir(3)` man page](mod@man).
 //!
