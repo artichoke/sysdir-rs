@@ -156,7 +156,7 @@ task :bindgen do
     f.puts <<~NEWTYPE
       /// Opaque type for holding sysdir enumeration state.
       #[repr(transparent)]
-      #[derive(Debug, PartialEq, Eq)]
+      #[derive(Debug)]
       #[allow(missing_copy_implementations)]
       pub struct sysdir_search_path_enumeration_state(::core::ffi::c_uint);
 
