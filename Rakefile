@@ -53,7 +53,7 @@ namespace :format do
 
   desc 'Format .c and .h sources with clang-format'
   task :c do
-    sh 'npx github:artichoke/clang-format'
+    sh 'npx --yes github:artichoke/clang-format'
   end
 end
 
@@ -73,7 +73,7 @@ namespace :fmt do
 
   desc 'Format .c and .h sources with clang-format'
   task :c do
-    sh 'npx github:artichoke/clang-format'
+    sh 'npx --yes github:artichoke/clang-format'
   end
 end
 
