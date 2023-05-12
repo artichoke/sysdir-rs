@@ -1,0 +1,59 @@
+---
+name: Audit
+"on":
+  push:
+    branches:
+      - trunk
+  pull_request:
+    branches:
+      - trunk
+  schedule:
+    - cron: "0 0 * * TUE"
+jobs:
+  ruby:
+    name: Audit Ruby Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.2
+
+      - name: Install Ruby toolchain
+        uses: ruby/setup-ruby@6cecb48364174b0952995175c55f9bf5527e6682 # v1.147.0
+        with:
+          ruby-version: ".ruby-version"
+          bundler-cache: true
+
+      - name: bundler-audit
+        run: bundle exec bundle-audit check --update
+
+  rust:
+    name: Audit Rust Dependencies
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        checks:
+          - advisories
+          - bans licenses sources
+
+    # Prevent sudden announcement of a new advisory from failing ci:
+    continue-on-error: ${{ matrix.checks == 'advisories' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.2
+
+      - name: Install Rust toolchain
+        uses: artichoke/setup-rust/audit@v1.9.0
+
+      - name: Generate Cargo.lock
+        run: |
+          if [[ ! -f "Cargo.lock" ]]; then
+            cargo generate-lockfile --verbose
+          fi
+
+      - uses: EmbarkStudios/cargo-deny-action@e0a440755b184aa50374330fa75cca0f84fcb59a # v1.5.2
+        with:
+          arguments: --locked --all-features
+          command: check ${{ matrix.checks }}
+          command-arguments: --show-stats
