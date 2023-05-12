@@ -48,7 +48,6 @@ pub const SYSDIR_DOMAIN_MASK_NETWORK: sysdir_search_path_domain_mask_t = 4;
 pub const SYSDIR_DOMAIN_MASK_SYSTEM: sysdir_search_path_domain_mask_t = 8;
 pub const SYSDIR_DOMAIN_MASK_ALL: sysdir_search_path_domain_mask_t = 65535;
 pub type sysdir_search_path_domain_mask_t = ::core::ffi::c_uint;
-pub type sysdir_search_path_enumeration_state = ::core::ffi::c_uint;
 extern "C" {
     pub fn sysdir_start_search_path_enumeration(
         dir: sysdir_search_path_directory_t,
@@ -60,4 +59,24 @@ extern "C" {
         state: sysdir_search_path_enumeration_state,
         path: *mut ::core::ffi::c_char,
     ) -> sysdir_search_path_enumeration_state;
+}
+
+/// Opaque type for holding sysdir enumeration state.
+#[repr(transparent)]
+#[derive(Debug, PartialEq, Eq)]
+#[allow(missing_copy_implementations)]
+pub struct sysdir_search_path_enumeration_state(::core::ffi::c_uint);
+
+impl PartialEq<::core::ffi::c_uint> for sysdir_search_path_enumeration_state {
+    fn eq(&self, other: &::core::ffi::c_uint) -> bool {
+        self.0 == *other
+    }
+}
+
+impl sysdir_search_path_enumeration_state {
+    /// Return true if the state indicates the enumeration is finished.
+    #[must_use]
+    pub fn is_finished(&self) -> bool {
+        self.0 == 0
+    }
 }

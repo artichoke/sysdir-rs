@@ -126,6 +126,7 @@ task :bindgen do
     bindgen --use-core
     --allowlist-function sysdir.*
     --allowlist-type sysdir.*
+    --blocklist-type sysdir_search_path_enumeration_state
     --allowlist-var PATH_MAX
     --default-enum-style rust_non_exhaustive
     --constified-enum sysdir_search_path_domain_mask_t
@@ -150,6 +151,29 @@ task :bindgen do
     f.puts ''
 
     IO.copy_stream(bindgen_io, f)
+
+    f.puts ''
+    f.puts <<~NEWTYPE
+      /// Opaque type for holding sysdir enumeration state.
+      #[repr(transparent)]
+      #[derive(Debug, PartialEq, Eq)]
+      #[allow(missing_copy_implementations)]
+      pub struct sysdir_search_path_enumeration_state(::core::ffi::c_uint);
+
+      impl PartialEq<::core::ffi::c_uint> for sysdir_search_path_enumeration_state {
+          fn eq(&self, other: &::core::ffi::c_uint) -> bool {
+              self.0 == *other
+          }
+      }
+
+      impl sysdir_search_path_enumeration_state {
+          /// Return true if the state indicates the enumeration is finished.
+          #[must_use]
+          pub fn is_finished(&self) -> bool {
+              self.0 == 0
+          }
+      }
+    NEWTYPE
   end
 end
 

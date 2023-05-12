@@ -143,4 +143,30 @@ mod tests {
 
         assert_eq!(count, 1, "Should iterate once and find `/Users`");
     }
+
+    #[test]
+    fn example_and_linkage_with_opaque_state_helpers() {
+        let mut count = 0_usize;
+        let mut path = [0; PATH_MAX as usize];
+
+        let dir = sysdir_search_path_directory_t::SYSDIR_DIRECTORY_USER;
+        let domain_mask = SYSDIR_DOMAIN_MASK_LOCAL;
+
+        unsafe {
+            let mut state = sysdir_start_search_path_enumeration(dir, domain_mask);
+            loop {
+                let path = path.as_mut_ptr().cast::<c_char>();
+                state = sysdir_get_next_search_path_enumeration(state, path);
+                if state.is_finished() {
+                    break;
+                }
+                let path = CStr::from_ptr(path);
+                let s = path.to_str().unwrap();
+                assert_eq!(s, "/Users");
+                count += 1;
+            }
+        }
+
+        assert_eq!(count, 1, "Should iterate once and find `/Users`");
+    }
 }
