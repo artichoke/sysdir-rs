@@ -1,0 +1,16 @@
+---
+name: Merge
+"on":
+  pull_request:
+    types: [opened, labeled, unlabeled, synchronize]
+jobs:
+  labels:
+    name: Labels
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: mheap/github-action-required-labels@422e4c352ef83db91089e6acfbf09d8725e08abc # v4.0.0
+        with:
+          mode: exactly
+          count: 0
+          labels: "S-do-not-merge, S-wip"
