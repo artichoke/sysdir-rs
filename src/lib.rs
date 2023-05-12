@@ -52,7 +52,7 @@
 //!
 //! use sysdir::*;
 //!
-//! let mut path: [c_char; PATH_MAX as usize] = [0; PATH_MAX as usize];
+//! let mut path = [0; PATH_MAX as usize];
 //!
 //! let dir = sysdir_search_path_directory_t::SYSDIR_DIRECTORY_USER;
 //! let domain_mask = sysdir_search_path_domain_mask_t::SYSDIR_DOMAIN_MASK_LOCAL;
@@ -60,7 +60,7 @@
 //! unsafe {
 //!     let mut state = sysdir_start_search_path_enumeration(dir, domain_mask);
 //!     loop {
-//!         let path = path.as_mut_ptr();
+//!         let path = path.as_mut_ptr().cast::<c_char>();
 //!         state = sysdir_get_next_search_path_enumeration(state, path);
 //!         if state == 0 {
 //!             break;
@@ -121,7 +121,7 @@ mod tests {
     #[test]
     fn example_and_linkage() {
         let mut count = 0_usize;
-        let mut path: [c_char; PATH_MAX as usize] = [0; PATH_MAX as usize];
+        let mut path = [0; PATH_MAX as usize];
 
         let dir = sysdir_search_path_directory_t::SYSDIR_DIRECTORY_USER;
         let domain_mask = sysdir_search_path_domain_mask_t::SYSDIR_DOMAIN_MASK_LOCAL;
@@ -129,7 +129,7 @@ mod tests {
         unsafe {
             let mut state = sysdir_start_search_path_enumeration(dir, domain_mask);
             loop {
-                let path = path.as_mut_ptr();
+                let path = path.as_mut_ptr().cast::<c_char>();
                 state = sysdir_get_next_search_path_enumeration(state, path);
                 if state == 0 {
                     break;
