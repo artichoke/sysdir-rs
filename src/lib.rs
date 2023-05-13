@@ -39,7 +39,9 @@
 //! The `sysdir` API first appeared in OS X 10.12, iOS 10, watchOS 3 and tvOS 10
 //! replacing the deprecated `NSSystemDirectories(3)` API.
 //!
-//! # Linkage
+//! Note that this crate is completely empty on non-Apple platforms.
+//!
+//! ## Linkage
 //!
 //! `sysdir(3)` is provided by `libSystem`, which is linked into every binary on
 //! Apple platforms. This crate does not link to `CoreFoundation`, `Foundation`,
@@ -47,7 +49,24 @@
 //!
 //! # Examples
 //!
-//! ```
+#![cfg_attr(
+    any(
+        target_os = "macos",
+        target_os = "ios",
+        target_os = "tvos",
+        target_os = "watchos"
+    ),
+    doc = "```"
+)]
+#![cfg_attr(
+    not(any(
+        target_os = "macos",
+        target_os = "ios",
+        target_os = "tvos",
+        target_os = "watchos"
+    )),
+    doc = "```compile_fail"
+)]
 //! use core::ffi::{c_char, CStr};
 //!
 //! use sysdir::*;
@@ -73,9 +92,18 @@
 //! ```
 
 #![no_std]
-#![doc(html_root_url = "https://docs.rs/sysdir/1.0.0")]
+#![doc(html_root_url = "https://docs.rs/sysdir/1.1.0")]
 
 // Ensure code blocks in `README.md` compile
+#[cfg(all(
+    doctest,
+    any(
+        target_os = "macos",
+        target_os = "ios",
+        target_os = "tvos",
+        target_os = "watchos"
+    )
+))]
 #[doc = include_str!("../README.md")]
 mod readme {}
 
@@ -96,11 +124,31 @@ pub mod man {}
 #[allow(clippy::all)]
 #[allow(clippy::pedantic)]
 #[allow(clippy::restriction)]
+#[cfg(any(
+    target_os = "macos",
+    target_os = "ios",
+    target_os = "tvos",
+    target_os = "watchos"
+))]
 mod sys;
 
+#[cfg(any(
+    target_os = "macos",
+    target_os = "ios",
+    target_os = "tvos",
+    target_os = "watchos"
+))]
 pub use self::sys::*;
 
-#[cfg(test)]
+#[cfg(all(
+    test,
+    any(
+        target_os = "macos",
+        target_os = "ios",
+        target_os = "tvos",
+        target_os = "watchos"
+    )
+))]
 mod tests {
     use core::ffi::{c_char, CStr};
 
