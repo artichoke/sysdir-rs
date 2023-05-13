@@ -75,6 +75,43 @@ jobs:
       - name: Test with no default features
         run: cargo test --no-default-features
 
+  build-non-apple:
+    name: Build (non-Apple platforms)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      RUSTFLAGS: -D warnings
+      RUST_BACKTRACE: 1
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.2
+
+      - name: Install Rust toolchain
+        uses: artichoke/setup-rust/build-and-test@v1.9.0
+        with:
+          toolchain: stable
+
+      - name: Compile
+        run: cargo build --verbose
+
+      - name: Compile tests
+        run: cargo test --no-run
+
+      - name: Test
+        run: cargo test
+
+      - name: Test with all features
+        run: cargo test --all-features
+
+      - name: Test with no default features
+        run: cargo test --no-default-features
+
+      - name: Build documentation
+        run: cargo doc
+
   rust:
     name: Lint and format Rust
     runs-on: macos-latest
