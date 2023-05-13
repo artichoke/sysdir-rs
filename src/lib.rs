@@ -53,6 +53,15 @@
 //! use core::ffi::{c_char, CStr};
 //!
 //! use sysdir::*;
+#![cfg_attr(
+    not(any(
+        target_os = "macos",
+        target_os = "ios",
+        target_os = "tvos",
+        target_os = "watchos"
+    )),
+    doc = "# use sysdir::mock::*;"
+)]
 //!
 //! let mut path = [0; PATH_MAX as usize];
 //!
@@ -89,6 +98,20 @@
 ))]
 #[doc = include_str!("../README.md")]
 mod readme {}
+
+/// Mocks of `sys` types, constants, and functions to allow examples to compile
+/// in doctests.
+#[cfg(all(
+    any(doc, doctest),
+    not(any(
+        target_os = "macos",
+        target_os = "ios",
+        target_os = "tvos",
+        target_os = "watchos"
+    ))
+))]
+#[doc(hidden)]
+pub mod mock;
 
 /// man page for `sysdir(3)`.
 ///
