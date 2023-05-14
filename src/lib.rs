@@ -92,7 +92,7 @@
 //! ```
 
 #![no_std]
-#![doc(html_root_url = "https://docs.rs/sysdir/1.1.0")]
+#![doc(html_root_url = "https://docs.rs/sysdir/1.2.0")]
 
 // Ensure code blocks in `README.md` compile
 #[cfg(all(
