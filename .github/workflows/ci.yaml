@@ -44,6 +44,15 @@ jobs:
       - name: Test with no default features
         run: cargo test --no-default-features
 
+      - name: Check example
+        run: cargo check --examples
+
+      - name: Build examples
+        run: cargo build --examples
+
+      - name: Run example
+        run: cargo run --example enumerate_system_dirs -q
+
   build-msrv:
     name: Build (MSRV)
     runs-on: macos-latest
@@ -74,6 +83,15 @@ jobs:
 
       - name: Test with no default features
         run: cargo test --no-default-features
+
+      - name: Check example
+        run: cargo check --examples
+
+      - name: Build examples
+        run: cargo build --examples
+
+      - name: Run example
+        run: cargo run --example enumerate_system_dirs -q
 
   build-non-apple:
     name: Build (non-Apple platforms)
@@ -111,6 +129,19 @@ jobs:
 
       - name: Build documentation
         run: cargo doc
+
+      - name: Check example
+        run: cargo check --examples
+
+      - name: Build examples
+        run: cargo build --examples
+
+      - name: Run example
+        shell: bash
+        run: |
+          error_code="0"
+          cargo run --example enumerate_system_dirs -q || error_code="$?"
+          [[ "$error_code" == "1" ]]
 
   rust:
     name: Lint and format Rust

@@ -23,7 +23,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-sysdir = "1.1.0"
+sysdir = "1.2.0"
 ```
 
 Then resolve well-known directories like this:
@@ -51,6 +51,12 @@ unsafe {
         assert_eq!(s, "/Users");
     }
 }
+```
+
+You can test this crate works on your platform by running the example:
+
+```shell
+cargo run --example enumerate_system_dirs
 ```
 
 ## Implementation
