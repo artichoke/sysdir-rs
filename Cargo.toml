@@ -1,6 +1,6 @@
 [package]
 name = "sysdir"
-version = "1.2.1" # remember to set `html_root_url` in `src/lib.rs`.
+version = "1.2.2" # remember to set `html_root_url` in `src/lib.rs`.
 authors = ["Ryan Lopopolo <rjl@hyperbo.la>"]
 license = "Apache-2.0 OR MIT"
 edition = "2021"
@@ -11,7 +11,7 @@ documentation = "https://docs.rs/sysdir"
 homepage = "https://github.com/artichoke/sysdir-rs"
 description = "Rust bindings to sysdir(3) on macOS, iOS, tvOS, and watchOS"
 keywords = ["app_dirs", "apple", "known-folder", "path", "sysdir"]
-categories = ["api-bindings", "filesystem", "os::macos-apis"]
+categories = ["api-bindings", "filesystem", "no-std", "no-std::no-alloc", "os::macos-apis"]
 include = ["cext/**/*", "examples/**/*", "src/**/*", "tests/**/*", "LICENSE-*", "README.md", "sysdir.3.man"]
 
 [dependencies]
