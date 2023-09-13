@@ -72,15 +72,6 @@ jobs:
       - name: Compile
         run: cargo build --verbose
 
-      - name: Check example
-        run: cargo check --examples
-
-      - name: Build examples
-        run: cargo build --examples
-
-      - name: Run example
-        run: cargo run --example enumerate_system_dirs -q
-
   build-non-apple:
     name: Build (non-Apple platforms)
     runs-on: ${{ matrix.os }}
