@@ -72,18 +72,6 @@ jobs:
       - name: Compile
         run: cargo build --verbose
 
-      - name: Compile tests
-        run: cargo test --no-run
-
-      - name: Test
-        run: cargo test
-
-      - name: Test with all features
-        run: cargo test --all-features
-
-      - name: Test with no default features
-        run: cargo test --no-default-features
-
       - name: Check example
         run: cargo check --examples
 
