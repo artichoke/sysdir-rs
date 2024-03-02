@@ -186,7 +186,7 @@ task :manpage do
       man_io.close_read
       col_io.close_write
 
-      IO.copy_stream(col_io, 'sysdir.3.man')
+      IO.copy_stream(col_io, 'sysdir.3')
     end
   end
 end
