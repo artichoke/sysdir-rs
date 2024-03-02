@@ -136,10 +136,10 @@ mod platform {
 
         let mut idx = domains.len() * search_paths.len() - 1;
 
+        let mut out = io::stdout().lock();
+
         for (domain_mask, domain_name) in domains {
             for (search_path, search_path_name) in search_paths {
-                let mut out = io::stdout().lock();
-
                 let mut path_count = 0;
                 writeln!(out, "{search_path_name} in {domain_name} domain:\n")?;
                 enumerate(search_path, domain_mask, |bytes| {
