@@ -12,7 +12,7 @@ homepage = "https://github.com/artichoke/sysdir-rs"
 description = "Rust bindings to sysdir(3) on macOS, iOS, tvOS, and watchOS"
 keywords = ["app_dirs", "apple", "known-folder", "path", "sysdir"]
 categories = ["api-bindings", "filesystem", "no-std", "no-std::no-alloc", "os::macos-apis"]
-include = ["cext/**/*", "examples/**/*", "src/**/*", "tests/**/*", "LICENSE-*", "README.md", "sysdir.3.man"]
+include = ["cext/**/*", "examples/**/*", "src/**/*", "tests/**/*", "LICENSE-*", "README.md", "sysdir.3"]
 
 [dependencies]
 

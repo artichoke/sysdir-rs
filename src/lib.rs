@@ -110,7 +110,7 @@ mod readme {}
 /// man page for `sysdir(3)`.
 ///
 /// ```text
-#[doc = include_str!("../sysdir.3.man")]
+#[doc = include_str!("../sysdir.3")]
 /// ```
 #[cfg(any(doc, doctest))]
 pub mod man {}
