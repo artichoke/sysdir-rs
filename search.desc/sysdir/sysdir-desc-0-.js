@@ -1,0 +1,1 @@
+searchState.loadedDescShard("sysdir", 0, "Enumeration of the filesystem paths for the various …\nReturns the argument unchanged.\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.\nCalls <code>U::from(self)</code>.\nReturn true if the state indicates the enumeration is …\nman page for <code>sysdir(3)</code>.\nOpaque type for holding sysdir enumeration state.")

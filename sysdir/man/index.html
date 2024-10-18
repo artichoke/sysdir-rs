@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="man page for `sysdir(3)`."><title>sysdir::man - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="sysdir" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (3ed6e3cc6 2024-10-17)" data-channel="nightly" data-search-js="search-e056c65ede92db13.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../sysdir/index.html">sysdir</a><span class="version">1.2.2</span></h2></div><div class="sidebar-elems"><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate sysdir</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><span class="rustdoc-breadcrumbs"><a href="../index.html">sysdir</a></span><h1>Module <span>man</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/sysdir/lib.rs.html#116">source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>man page for <code>sysdir(3)</code>.</p>
+<div class="example-wrap"><pre class="language-text"><code>sysdir(3)                  Library Functions Manual                  sysdir(3)
+
+NAME
+     sysdir_start_search_path_enumeration,
+     sysdir_get_next_search_path_enumeration – Enumeration of the filesystem
+     paths for the various standard system directories where apps, resources,
+     etc. get installed.
+
+SYNOPSIS
+     #include &lt;sysdir.h&gt;
+
+     sysdir_search_path_enumeration_state
+     sysdir_start_search_path_enumeration(sysdir_search_path_directory_t dir,
+         sysdir_search_path_domain_mask_t domainMask);
+
+     sysdir_search_path_enumeration_state
+     sysdir_get_next_search_path_enumeration(sysdir_search_path_enumeration_state state,
+         char *path);
+
+DESCRIPTION
+     The sysdir API returns the various standard system directories where
+     apps, resources, etc. get installed. Because queries can return multiple
+     directories, the API is in the form of an enumeration. The directories
+     are returned in search path order: that is, the first place to look is
+     returned first.
+
+     sysdir_start_search_path_enumeration() begins enumeration of the
+     filesystem paths for the specified directory and domain(s).  The return
+     value should be passed to one or more calls to
+     sysdir_get_next_search_path_enumeration() to obtain the filesystem path
+     and continue the enumeration.
+
+     sysdir_get_next_search_path_enumeration() returns a filesystem path for
+     the directory and domain(s) specified by the state value returned by
+     sysdir_start_search_path_enumeration().  Subsequent calls to
+     sysdir_get_next_search_path_enumeration() should pass the state value
+     returned by the previous call to continue the enumeration in each domain.
+     A state value of zero will be returned when all domains have been
+     enumerated.
+
+     The path buffer that is passed to
+     sysdir_get_next_search_path_enumeration() will be filled with a null-
+     terminated string, possibly containing as many as PATH_MAX-1 characters.
+
+     Some directory paths returned may not exist on the filesystem.
+
+     Some combinations of dir and domainMask may return no directory paths.
+
+     Directory paths returned in the user domain will contain &quot;~&quot; to refer to
+     the user&#39;s directory.
+
+     The environment variable NEXT_ROOT is prepended as necessary to the
+     returned directory paths.  NEXT_ROOT is ignored if the process is setuid
+     or is code signed with entitlements.
+
+DIRECTORY CONSTANTS
+     The following sysdir_search_path_directory constants are defined:
+
+     SYSDIR_DIRECTORY_APPLICATION     Supported applications (Applications)
+
+     SYSDIR_DIRECTORY_DEMO_APPLICATION
+                                      Unsupported applications and
+                                      demonstration versions
+                                      (Applications/Demos)
+
+     SYSDIR_DIRECTORY_DEVELOPER_APPLICATION
+                                      Developer applications
+                                      (Developer/Applications) Deprecated: As
+                                      of Xcode 4.3, there is no longer a
+                                      Developer Application directory
+                                      directory; instead, Xcode.app is a self-
+                                      contained application that gets
+                                      installed in the user&#39;s Applications
+                                      directory, by default, although it can
+                                      be put anywhere.
+
+     SYSDIR_DIRECTORY_ADMIN_APPLICATION
+                                      System and network administration
+                                      applications (Applications/Utilities)
+
+     SYSDIR_DIRECTORY_LIBRARY         Various user-visible documentation,
+                                      support, and configuration files,
+                                      resources (Library)
+
+     SYSDIR_DIRECTORY_DEVELOPER       Developer resources (Developer)
+                                      Deprecated: As of Xcode 4.3, there is no
+                                      longer a Developer directory; instead,
+                                      Xcode.app is a self-contained
+                                      application that gets installed in the
+                                      user&#39;s Applications directory, by
+                                      default, although it can be put
+                                      anywhere.
+
+     SYSDIR_DIRECTORY_USER            User home directories (Users)
+
+     SYSDIR_DIRECTORY_DOCUMENTATION   Location of documentation
+                                      (Library/Documentation)
+
+     SYSDIR_DIRECTORY_DOCUMENT        Location of documents (Documents)
+
+     SYSDIR_DIRECTORY_CORESERVICE     Location of core services
+                                      (Library/CoreServices)
+
+     SYSDIR_DIRECTORY_AUTOSAVED_INFORMATION
+                                      Location of user&#39;s autosaved documents
+                                      (Library/Autosave Information)
+
+     SYSDIR_DIRECTORY_DESKTOP         Location of user&#39;s desktop directory
+                                      (Desktop)
+
+     SYSDIR_DIRECTORY_CACHES          Location of discardable cache files
+                                      (Library/Caches)
+
+     SYSDIR_DIRECTORY_APPLICATION_SUPPORT
+                                      Location of application support files
+                                      (Library/Application Support)
+
+     SYSDIR_DIRECTORY_DOWNLOADS       Location of user&#39;s downloads directory
+                                      (Downloads)
+
+     SYSDIR_DIRECTORY_INPUT_METHODS   Location of input methods (Library/Input
+                                      Methods)
+
+     SYSDIR_DIRECTORY_MOVIES          Location of user&#39;s Movies directory
+                                      (Movies)
+
+     SYSDIR_DIRECTORY_MUSIC           Location of user&#39;s Music directory
+                                      (Music)
+
+     SYSDIR_DIRECTORY_PICTURES        Location of user&#39;s Pictures directory
+                                      (Pictures)
+
+     SYSDIR_DIRECTORY_PRINTER_DESCRIPTION
+                                      Location of system&#39;s PPDs directory
+                                      (Library/Printers/PPDs)
+
+     SYSDIR_DIRECTORY_SHARED_PUBLIC   Location of user&#39;s Public sharing
+                                      directory (Public)
+
+     SYSDIR_DIRECTORY_PREFERENCE_PANES
+                                      Location of the PreferencePanes
+                                      directory for use with System
+                                      Preferences (Library/PreferencePanes)
+
+     SYSDIR_DIRECTORY_ALL_APPLICATIONS
+                                      All directories where applications can
+                                      occur (/Applications, ~/Applications,
+                                      /Applications/Utilities, etc)
+
+     SYSDIR_DIRECTORY_ALL_LIBRARIES   All directories where resources can
+                                      occur (/Library, ~/Library,
+                                      /Network/Library, etc)
+
+DOMAIN CONSTANTS
+     The following sysdir_search_path_domain_mask constants are defined:
+
+     SYSDIR_DOMAIN_MASK_USER          The user&#39;s home directory -- the place
+                                      to install user&#39;s personal items (~)
+
+     SYSDIR_DOMAIN_MASK_LOCAL         Local to the current machine -- the
+                                      place to install items available to
+                                      everyone on this machine
+
+     SYSDIR_DOMAIN_MASK_NETWORK       Publically available location in the
+                                      local area network -- the place to
+                                      install items available on the network
+
+     SYSDIR_DOMAIN_MASK_SYSTEM        Provided by Apple -- can&#39;t be modified
+
+     SYSDIR_DOMAIN_MASK_ALL           All domains -- all of the above and
+                                      future domains
+
+ENVIRONMENT
+     The following environment variable affects the execution of
+     sysdir_get_next_search_path_enumeration:
+
+     NEXT_ROOT  If the NEXT_ROOT environment variable is set and the current
+                process is not tainted by uid or gid changes, NEXT_ROOT is
+                prepended as necessary to the returned directory paths.
+                NEXT_ROOT is ignored if the process is setuid or is code
+                signed with entitlements.
+
+EXAMPLES
+     #include &lt;limits.h&gt;
+     #include &lt;sysdir.h&gt;
+
+     char path[PATH_MAX];
+     sysdir_search_path_enumeration_state state = sysdir_start_search_path_enumeration(dir, domainMask);
+     while ( (state = sysdir_get_next_search_path_enumeration(state, path)) != 0 ) {
+         // Handle directory path
+     }
+
+HISTORY
+     The sysdir API first appeared in OS X 10.12, iOS 10, watchOS 3 and tvOS
+     10 replacing the deprecated NSSystemDirectories(3) API.
+
+Darwin                         December 22, 2015                        Darwin</code></pre></div></div></details></section></div></main></body></html>
