@@ -16,7 +16,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, macos-12, macos-13, macos-14]
+        os:
+          - macos-latest
+          - macos-15
+          - macos-14
+          - macos-13
     env:
       RUSTFLAGS: -D warnings
       RUST_BACKTRACE: 1
