@@ -16,15 +16,6 @@ include = ["cext/**/*", "examples/**/*", "src/**/*", "tests/**/*", "LICENSE-*", 
 
 [dependencies]
 
-[dev-dependencies]
-
-# Check that crate versions are properly updated in documentation and code when
-# bumping the version.
-[dev-dependencies.version-sync]
-version = "0.9.4"
-default-features = false
-features = ["markdown_deps_updated", "html_root_url_updated"]
-
 [package.metadata.docs.rs]
 rustdoc-args = ["--cfg", "docsrs"]
 targets = [
