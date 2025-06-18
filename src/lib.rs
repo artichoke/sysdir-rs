@@ -150,7 +150,7 @@ pub use self::sys::*;
     )
 ))]
 mod tests {
-    use core::ffi::{c_char, CStr};
+    use core::ffi::{CStr, c_char};
 
     use super::*;
 

@@ -77,7 +77,7 @@ mod platform {
 ))]
 mod platform {
     use std::error::Error;
-    use std::ffi::{c_char, CStr};
+    use std::ffi::{CStr, c_char};
     use std::io::{self, Write as _};
 
     use sysdir::{sysdir_search_path_directory_t::*, *};
