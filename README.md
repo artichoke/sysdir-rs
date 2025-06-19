@@ -23,7 +23,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-sysdir = "1.2.2"
+sysdir = "1.3.0"
 ```
 
 Then resolve well-known directories like this:
@@ -75,7 +75,7 @@ sysdir-rs is `no_std` and only requires `core`.
 
 ## Minimum Supported Rust Version
 
-This crate requires at least Rust 1.64.0. This version can be bumped in minor
+This crate requires at least Rust 1.85.0. This version can be bumped in minor
 releases.
 
 ## License

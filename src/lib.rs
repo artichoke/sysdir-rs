@@ -92,7 +92,7 @@
 //! ```
 
 #![no_std]
-#![doc(html_root_url = "https://docs.rs/sysdir/1.2.2")]
+#![doc(html_root_url = "https://docs.rs/sysdir/1.3.0")]
 
 // Ensure code blocks in `README.md` compile
 #[cfg(all(
@@ -150,7 +150,7 @@ pub use self::sys::*;
     )
 ))]
 mod tests {
-    use core::ffi::{c_char, CStr};
+    use core::ffi::{CStr, c_char};
 
     use super::*;
 
