@@ -24,7 +24,6 @@
 //
 // This approach is borrowed from tokio.
 #![cfg_attr(docsrs, feature(doc_cfg))]
-#![cfg_attr(docsrs, feature(doc_alias))]
 
 //! Enumeration of the filesystem paths for the various standard system
 //! directories where apps, resources, etc. get installed.
@@ -92,7 +91,7 @@
 //! ```
 
 #![no_std]
-#![doc(html_root_url = "https://docs.rs/sysdir/1.3.1")]
+#![doc(html_root_url = "https://docs.rs/sysdir/1.3.2")]
 
 // Ensure code blocks in `README.md` compile
 #[cfg(all(
