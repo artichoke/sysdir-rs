@@ -46,6 +46,22 @@
 //! Apple platforms. This crate does not link to `CoreFoundation`, `Foundation`,
 //! or any other system libraries and frameworks.
 //!
+//! ## Path Semantics
+//!
+//! These bindings expose raw `sysdir(3)` search-path strings from Darwin.
+//! Returned values are not normalized filesystem paths:
+//!
+//! - user-domain results may contain a literal `~` instead of an expanded home
+//!   directory
+//! - if `NEXT_ROOT` is set and honored by the process, many local, network, and
+//!   system-domain results are prefixed by that directory
+//! - callers should not assume returned values are valid UTF-8 if `NEXT_ROOT`
+//!   contains non-UTF-8 bytes
+//!
+//! Callers that intend to use these values with filesystem APIs should expand
+//! `~`, account for `NEXT_ROOT`, and validate UTF-8 before opening or creating
+//! files.
+//!
 //! # Examples
 //!
 #![cfg_attr(
@@ -84,14 +100,19 @@
 //!             break;
 //!         }
 //!         let path = CStr::from_ptr(path);
-//!         let s = path.to_str().unwrap();
-//!         assert_eq!(s, "/Users");
+//!         let bytes = path.to_bytes();
+//!         // `sysdir(3)` may prefix local-domain results with `NEXT_ROOT`,
+//!         // which can also introduce non-UTF-8 bytes.
+//!         assert!(bytes.ends_with(b"/Users"));
 //!     }
 //! }
 //! ```
 
 #![no_std]
-#![doc(html_root_url = "https://docs.rs/sysdir/1.3.2")]
+#![doc(html_root_url = "https://docs.rs/sysdir/1.3.3")]
+
+#[cfg(test)]
+extern crate std;
 
 // Ensure code blocks in `README.md` compile
 #[cfg(all(
@@ -150,8 +171,31 @@ pub use self::sys::*;
 ))]
 mod tests {
     use core::ffi::{CStr, c_char};
+    use std::os::unix::ffi::OsStrExt;
+    use std::{borrow::Cow, env};
 
     use super::*;
+
+    fn expected_local_users_directory() -> Cow<'static, [u8]> {
+        match env::var_os("NEXT_ROOT") {
+            Some(next_root) => {
+                let next_root = next_root.as_os_str().as_bytes();
+                let next_root = next_root
+                    .iter()
+                    .rposition(|&byte| byte != b'/')
+                    .map_or(&[][..], |pos| &next_root[..=pos]);
+                if next_root.is_empty() {
+                    Cow::Borrowed(b"/Users")
+                } else {
+                    let mut path = std::vec::Vec::with_capacity(next_root.len() + b"/Users".len());
+                    path.extend_from_slice(next_root);
+                    path.extend_from_slice(b"/Users");
+                    Cow::Owned(path)
+                }
+            }
+            None => Cow::Borrowed(b"/Users"),
+        }
+    }
 
     // EXAMPLES
     //
@@ -169,6 +213,7 @@ mod tests {
     fn example_and_linkage() {
         let mut count = 0_usize;
         let mut path = [0; PATH_MAX as usize];
+        let expected = expected_local_users_directory();
 
         let dir = sysdir_search_path_directory_t::SYSDIR_DIRECTORY_USER;
         let domain_mask = SYSDIR_DOMAIN_MASK_LOCAL;
@@ -182,8 +227,8 @@ mod tests {
                     break;
                 }
                 let path = CStr::from_ptr(path);
-                let s = path.to_str().unwrap();
-                assert_eq!(s, "/Users");
+                let bytes = path.to_bytes();
+                assert_eq!(bytes, expected.as_ref());
                 count += 1;
             }
         }
@@ -195,6 +240,7 @@ mod tests {
     fn example_and_linkage_with_opaque_state_helpers() {
         let mut count = 0_usize;
         let mut path = [0; PATH_MAX as usize];
+        let expected = expected_local_users_directory();
 
         let dir = sysdir_search_path_directory_t::SYSDIR_DIRECTORY_USER;
         let domain_mask = SYSDIR_DOMAIN_MASK_LOCAL;
@@ -208,8 +254,8 @@ mod tests {
                     break;
                 }
                 let path = CStr::from_ptr(path);
-                let s = path.to_str().unwrap();
-                assert_eq!(s, "/Users");
+                let bytes = path.to_bytes();
+                assert_eq!(bytes, expected.as_ref());
                 count += 1;
             }
         }
