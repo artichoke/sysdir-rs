@@ -109,7 +109,7 @@
 //! ```
 
 #![no_std]
-#![doc(html_root_url = "https://docs.rs/sysdir/1.3.2")]
+#![doc(html_root_url = "https://docs.rs/sysdir/1.3.3")]
 
 #[cfg(test)]
 extern crate std;

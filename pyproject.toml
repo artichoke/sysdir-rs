@@ -1,6 +1,6 @@
 [project]
 name = "sysdir-rs"
-version = "1.3.2"
+version = "1.3.3"
 description = "Rust bindings to sysdir(3) on macOS, iOS, tvOS, and watchOS"
 readme = "README.md"
 requires-python = ">=3.14"

@@ -22,7 +22,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-sysdir = "1.3.2"
+sysdir = "1.3.3"
 ```
 
 Then resolve well-known directories like this:
