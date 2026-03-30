@@ -24,6 +24,10 @@
 
 //! Example demonstrating the sysdir well-known directory enumeration API.
 //!
+//! The output is the raw search-path strings returned by `sysdir(3)`. User
+//! domain entries may contain a literal `~`, and local, network, and system
+//! domain entries may be prefixed by `NEXT_ROOT`.
+//!
 //! # Usage
 //!
 //! ```shell

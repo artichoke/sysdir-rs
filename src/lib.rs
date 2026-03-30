@@ -46,6 +46,19 @@
 //! Apple platforms. This crate does not link to `CoreFoundation`, `Foundation`,
 //! or any other system libraries and frameworks.
 //!
+//! ## Path Semantics
+//!
+//! These bindings expose raw `sysdir(3)` search-path strings from Darwin.
+//! Returned values are not normalized filesystem paths:
+//!
+//! - user-domain results may contain a literal `~` instead of an expanded home
+//!   directory
+//! - if `NEXT_ROOT` is set and honored by the process, many local, network, and
+//!   system-domain results are prefixed by that directory
+//!
+//! Callers that intend to use these values with filesystem APIs should expand
+//! `~` and account for `NEXT_ROOT` before opening or creating files.
+//!
 //! # Examples
 //!
 #![cfg_attr(
@@ -85,13 +98,17 @@
 //!         }
 //!         let path = CStr::from_ptr(path);
 //!         let s = path.to_str().unwrap();
-//!         assert_eq!(s, "/Users");
+//!         // `sysdir(3)` may prefix local-domain results with `NEXT_ROOT`.
+//!         assert!(s.ends_with("/Users"));
 //!     }
 //! }
 //! ```
 
 #![no_std]
 #![doc(html_root_url = "https://docs.rs/sysdir/1.3.2")]
+
+#[cfg(test)]
+extern crate std;
 
 // Ensure code blocks in `README.md` compile
 #[cfg(all(
@@ -150,8 +167,23 @@ pub use self::sys::*;
 ))]
 mod tests {
     use core::ffi::{CStr, c_char};
+    use std::{borrow::Cow, env};
 
     use super::*;
+
+    fn expected_local_users_directory() -> Cow<'static, str> {
+        match env::var("NEXT_ROOT") {
+            Ok(next_root) => {
+                let next_root = next_root.trim_end_matches('/');
+                if next_root.is_empty() {
+                    Cow::Borrowed("/Users")
+                } else {
+                    Cow::Owned(std::format!("{next_root}/Users"))
+                }
+            }
+            Err(_) => Cow::Borrowed("/Users"),
+        }
+    }
 
     // EXAMPLES
     //
@@ -169,6 +201,7 @@ mod tests {
     fn example_and_linkage() {
         let mut count = 0_usize;
         let mut path = [0; PATH_MAX as usize];
+        let expected = expected_local_users_directory();
 
         let dir = sysdir_search_path_directory_t::SYSDIR_DIRECTORY_USER;
         let domain_mask = SYSDIR_DOMAIN_MASK_LOCAL;
@@ -183,7 +216,7 @@ mod tests {
                 }
                 let path = CStr::from_ptr(path);
                 let s = path.to_str().unwrap();
-                assert_eq!(s, "/Users");
+                assert_eq!(s, expected.as_ref());
                 count += 1;
             }
         }
@@ -195,6 +228,7 @@ mod tests {
     fn example_and_linkage_with_opaque_state_helpers() {
         let mut count = 0_usize;
         let mut path = [0; PATH_MAX as usize];
+        let expected = expected_local_users_directory();
 
         let dir = sysdir_search_path_directory_t::SYSDIR_DIRECTORY_USER;
         let domain_mask = SYSDIR_DOMAIN_MASK_LOCAL;
@@ -209,7 +243,7 @@ mod tests {
                 }
                 let path = CStr::from_ptr(path);
                 let s = path.to_str().unwrap();
-                assert_eq!(s, "/Users");
+                assert_eq!(s, expected.as_ref());
                 count += 1;
             }
         }

@@ -47,10 +47,21 @@ unsafe {
         }
         let path = CStr::from_ptr(path);
         let s = path.to_str().unwrap();
-        assert_eq!(s, "/Users");
+        assert!(s.ends_with("/Users"));
     }
 }
 ```
+
+`sysdir-rs` exposes raw `sysdir(3)` search-path strings from Darwin. Those
+values are not always normalized filesystem paths:
+
+- user-domain results may contain a literal `~` instead of an expanded home
+  directory
+- if `NEXT_ROOT` is set and honored by the process, many local, network, and
+  system-domain results are prefixed by that directory
+
+If you intend to use returned values with filesystem APIs, expand `~` and
+account for `NEXT_ROOT` before opening or creating files.
 
 You can test this crate works on your platform by running the example:
 
