@@ -46,8 +46,8 @@ unsafe {
             break;
         }
         let path = CStr::from_ptr(path);
-        let s = path.to_str().unwrap();
-        assert!(s.ends_with("/Users"));
+        let bytes = path.to_bytes();
+        assert!(bytes.ends_with(b"/Users"));
     }
 }
 ```
@@ -59,9 +59,11 @@ values are not always normalized filesystem paths:
   directory
 - if `NEXT_ROOT` is set and honored by the process, many local, network, and
   system-domain results are prefixed by that directory
+- returned values are not guaranteed to be UTF-8 if `NEXT_ROOT` contains
+  non-UTF-8 bytes
 
-If you intend to use returned values with filesystem APIs, expand `~` and
-account for `NEXT_ROOT` before opening or creating files.
+If you intend to use returned values with filesystem APIs, expand `~`, account
+for `NEXT_ROOT`, and validate UTF-8 before opening or creating files.
 
 You can test this crate works on your platform by running the example:
 

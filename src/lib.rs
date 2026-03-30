@@ -55,9 +55,12 @@
 //!   directory
 //! - if `NEXT_ROOT` is set and honored by the process, many local, network, and
 //!   system-domain results are prefixed by that directory
+//! - callers should not assume returned values are valid UTF-8 if `NEXT_ROOT`
+//!   contains non-UTF-8 bytes
 //!
 //! Callers that intend to use these values with filesystem APIs should expand
-//! `~` and account for `NEXT_ROOT` before opening or creating files.
+//! `~`, account for `NEXT_ROOT`, and validate UTF-8 before opening or creating
+//! files.
 //!
 //! # Examples
 //!
@@ -97,9 +100,10 @@
 //!             break;
 //!         }
 //!         let path = CStr::from_ptr(path);
-//!         let s = path.to_str().unwrap();
-//!         // `sysdir(3)` may prefix local-domain results with `NEXT_ROOT`.
-//!         assert!(s.ends_with("/Users"));
+//!         let bytes = path.to_bytes();
+//!         // `sysdir(3)` may prefix local-domain results with `NEXT_ROOT`,
+//!         // which can also introduce non-UTF-8 bytes.
+//!         assert!(bytes.ends_with(b"/Users"));
 //!     }
 //! }
 //! ```
@@ -167,21 +171,29 @@ pub use self::sys::*;
 ))]
 mod tests {
     use core::ffi::{CStr, c_char};
+    use std::os::unix::ffi::OsStrExt;
     use std::{borrow::Cow, env};
 
     use super::*;
 
-    fn expected_local_users_directory() -> Cow<'static, str> {
-        match env::var("NEXT_ROOT") {
-            Ok(next_root) => {
-                let next_root = next_root.trim_end_matches('/');
+    fn expected_local_users_directory() -> Cow<'static, [u8]> {
+        match env::var_os("NEXT_ROOT") {
+            Some(next_root) => {
+                let next_root = next_root.as_os_str().as_bytes();
+                let next_root = next_root
+                    .iter()
+                    .rposition(|&byte| byte != b'/')
+                    .map_or(&[][..], |pos| &next_root[..=pos]);
                 if next_root.is_empty() {
-                    Cow::Borrowed("/Users")
+                    Cow::Borrowed(b"/Users")
                 } else {
-                    Cow::Owned(std::format!("{next_root}/Users"))
+                    let mut path = std::vec::Vec::with_capacity(next_root.len() + b"/Users".len());
+                    path.extend_from_slice(next_root);
+                    path.extend_from_slice(b"/Users");
+                    Cow::Owned(path)
                 }
             }
-            Err(_) => Cow::Borrowed("/Users"),
+            None => Cow::Borrowed(b"/Users"),
         }
     }
 
@@ -215,8 +227,8 @@ mod tests {
                     break;
                 }
                 let path = CStr::from_ptr(path);
-                let s = path.to_str().unwrap();
-                assert_eq!(s, expected.as_ref());
+                let bytes = path.to_bytes();
+                assert_eq!(bytes, expected.as_ref());
                 count += 1;
             }
         }
@@ -242,8 +254,8 @@ mod tests {
                     break;
                 }
                 let path = CStr::from_ptr(path);
-                let s = path.to_str().unwrap();
-                assert_eq!(s, expected.as_ref());
+                let bytes = path.to_bytes();
+                assert_eq!(bytes, expected.as_ref());
                 count += 1;
             }
         }
