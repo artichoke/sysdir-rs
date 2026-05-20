@@ -40,9 +40,14 @@ jobs:
           persist-credentials: false
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # master
-        with:
-          toolchain: nightly
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup set profile minimal
+          rustup toolchain install nightly --no-self-update
+          rustup default nightly
+          rustc -Vv
+          cargo -V
 
       - name: Check docs with no default features
         run: cargo doc --workspace --no-default-features
