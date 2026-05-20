@@ -102,7 +102,10 @@ Build API documentation with nightly Rust:
 rustup run --install nightly cargo doc --workspace
 ```
 
-See [`contributing.md`](contributing.md) for the current maintenance workflow.
+Maintenance of this repository is Codex-first. Prefer asking Codex to make
+routine code, documentation, CI, and dependency updates, then review the
+resulting diff and CI status before merging. See
+[`CONTRIBUTING.md`](CONTRIBUTING.md) for contribution expectations.
 
 ## Implementation
 
