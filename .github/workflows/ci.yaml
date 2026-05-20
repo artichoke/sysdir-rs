@@ -179,6 +179,27 @@ jobs:
       - name: Lint with Clippy
         run: cargo clippy --workspace --all-features --all-targets
 
+      - name: Install nightly Rust toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup toolchain install nightly --no-self-update
+          rustc +nightly -Vv
+          cargo +nightly -V
+
+      - name: Check docs with no default features
+        env:
+          RUSTDOCFLAGS: -D warnings -D rustdoc::broken_intra_doc_links --cfg docsrs
+        run: cargo +nightly doc --workspace --no-default-features
+
+      - name: Clean docs
+        run: cargo clean
+
+      - name: Build documentation
+        env:
+          RUSTDOCFLAGS: -D warnings -D rustdoc::broken_intra_doc_links --cfg docsrs
+        run: cargo +nightly doc --workspace
+
   text:
     name: Lint and format text
     runs-on: ubuntu-latest

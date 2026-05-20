@@ -5,7 +5,6 @@
 <br>
 [![Crate](https://img.shields.io/crates/v/sysdir.svg)](https://crates.io/crates/sysdir)
 [![API](https://docs.rs/sysdir/badge.svg)](https://docs.rs/sysdir)
-[![API trunk](https://img.shields.io/badge/docs-trunk-blue.svg)](https://artichoke.github.io/sysdir-rs/sysdir/)
 
 Enumeration of the filesystem paths for the various standard system directories
 where apps, resources, etc. get installed.
