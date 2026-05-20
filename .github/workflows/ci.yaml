@@ -160,24 +160,6 @@ jobs:
       - name: Lint with Clippy
         run: cargo clippy --workspace --all-features --all-targets
 
-  ruby:
-    name: Lint and format Ruby
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-
-      - name: Install Ruby toolchain
-        uses: ruby/setup-ruby@0cb964fd540e0a24c900370abf38a33466142735 # v1.305.0
-        with:
-          ruby-version: "4.0"
-          bundler-cache: true
-
-      - name: Lint and check formatting with Rubocop
-        run: bundle exec rubocop --format github
-
   c:
     name: Lint and format C
     runs-on: ubuntu-latest

@@ -80,15 +80,14 @@ cargo run --example enumerate_system_dirs
 mise install
 ```
 
-`mise.toml` installs Node.js, Python, Ruby, stable Rust with `clippy` and
-`rustfmt`, `uv`, `cargo-deny`, `zizmor`, and the `bindgen` CLI used to
-regenerate [`src/sys.rs`](src/sys.rs).
+`mise.toml` installs Node.js, Python, stable Rust with `clippy` and `rustfmt`,
+`uv`, `cargo-deny`, `zizmor`, and the `bindgen` CLI used to regenerate
+[`src/sys.rs`](src/sys.rs).
 
-Install the repository-local Node.js and Ruby dependencies with:
+Install the repository-local Node.js dependencies with:
 
 ```sh
 npm ci
-bundle install
 ```
 
 YAML linting runs through `uv`:
@@ -97,8 +96,13 @@ YAML linting runs through `uv`:
 uv run yamllint --strict --format github .
 ```
 
-`rake doc` still uses `rustup run --install nightly cargo doc --workspace` to
-install nightly Rust on demand for documentation builds.
+Build API documentation with nightly Rust:
+
+```sh
+rustup run --install nightly cargo doc --workspace
+```
+
+See [`contributing.md`](contributing.md) for the current maintenance workflow.
 
 ## Implementation
 
