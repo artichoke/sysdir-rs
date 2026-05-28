@@ -22,9 +22,10 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - macos-latest
+          - macos-26
+          - macos-26-intel
           - macos-15
-          - macos-14
+          - macos-15-intel
     env:
       RUSTFLAGS: -D warnings
       RUST_BACKTRACE: 1
@@ -70,7 +71,7 @@ jobs:
 
   build-msrv:
     name: Build (MSRV)
-    runs-on: macos-latest
+    runs-on: macos-15
     env:
       CARGO_INCREMENTAL: 0
       RUSTFLAGS: -D warnings
@@ -153,7 +154,7 @@ jobs:
 
   rust:
     name: Lint and format Rust
-    runs-on: macos-latest
+    runs-on: macos-15
     env:
       RUSTFLAGS: -D warnings
       RUST_BACKTRACE: 1
