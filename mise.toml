@@ -3,4 +3,5 @@ node = "lts"
 rust = { version = "stable", profile = "minimal", components = "clippy,rustfmt" }
 zizmor = "latest"
 
+"cargo:bindgen-cli" = "latest"
 "cargo:cargo-deny" = "latest"
