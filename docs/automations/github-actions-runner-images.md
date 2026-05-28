@@ -84,6 +84,36 @@ labels, source links, and next relevant dates.
 If changes are needed, edit the relevant workflow files and keep the diff scoped
 to runner image maintenance. Then create one commit and one pull request.
 
+If workflow matrix labels change, check whether required status-check contexts
+in GitHub branch rulesets also need to change. The `gh ruleset` command can list
+and view rulesets, but ruleset updates currently go through `gh api`:
+
+```sh
+gh ruleset list --repo artichoke/sysdir-rs
+gh api repos/artichoke/sysdir-rs/rulesets/<ruleset-id> \
+  --jq '.rules[] | select(.type == "required_status_checks").parameters.required_status_checks[].context'
+```
+
+When the required-check list needs updating, fetch the full ruleset, build an
+update payload from its editable fields, update the `required_status_checks`
+contexts, and put the ruleset back:
+
+```sh
+gh api repos/artichoke/sysdir-rs/rulesets/<ruleset-id> > /tmp/sysdir-rs-ruleset.json
+jq '{name, target, enforcement, conditions, bypass_actors, rules}' \
+  /tmp/sysdir-rs-ruleset.json > /tmp/sysdir-rs-ruleset.update.json
+# Edit /tmp/sysdir-rs-ruleset.update.json so required check contexts match the
+# workflow job names produced by the new matrix.
+gh api -X PUT repos/artichoke/sysdir-rs/rulesets/<ruleset-id> \
+  --input /tmp/sysdir-rs-ruleset.update.json
+```
+
+Ruleset edits are repository configuration changes, not git changes. Mention any
+ruleset contexts inspected or updated in the pull request and inbox summary. If
+the automation cannot update the ruleset because of permissions, open the pull
+request anyway and lead the inbox item with the exact required-check contexts
+that need manual ruleset changes.
+
 Pull requests from this automation must include the `A-build` and `C-automation`
 labels, plus the `codex` label. Include source links for runner image
 announcements and explain any upcoming deprecation, brownout, or latest label
@@ -122,5 +152,6 @@ Open an inbox item after every run summarizing:
 - source links used;
 - upcoming migration, deprecation, brownout, or retirement dates;
 - changes made or why no change was needed;
+- branch ruleset required-check contexts inspected or updated;
 - validation run and any skipped checks;
 - pull request and auto-merge status, if a pull request was opened.
