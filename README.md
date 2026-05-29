@@ -85,7 +85,7 @@ mise install
 Install the repository-local Node.js dependencies with:
 
 ```sh
-npm ci
+pnpm install
 ```
 
 Build API documentation with nightly Rust:
