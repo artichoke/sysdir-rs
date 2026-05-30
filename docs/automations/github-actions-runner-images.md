@@ -135,7 +135,7 @@ For workflow-only edits, run:
 
 ```sh
 git diff --check
-npx prettier --check .github/workflows/*.yaml .github/*.yml .github/*.yaml
+pnpm exec prettier --check .github/workflows/*.yaml .github/*.yml .github/*.yaml
 ```
 
 If `actionlint` is available, run it against the changed workflows. If it is not

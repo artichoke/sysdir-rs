@@ -14,4 +14,5 @@ automation to read and follow its documentation in this repository.
 Current automations:
 
 - [Bindings Freshness](./bindings-freshness.md)
+- [Dependency Sweep](./dependency-sweep.md)
 - [GitHub Actions Runner Images](./github-actions-runner-images.md)
