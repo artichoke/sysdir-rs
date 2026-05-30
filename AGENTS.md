@@ -10,17 +10,19 @@ compatibility surfaces.
 ## Operating Loop
 
 1. Classify the change before editing.
-2. Use the matching workflow section below to choose the guardrails and runbooks
+2. Read [ARCHITECTURE.md](ARCHITECTURE.md) for the crate codemap and durable
+   invariants.
+3. Use the matching workflow section below to choose the guardrails and runbooks
    to consult.
-3. Keep the diff narrow. Do not mix behavior, dependency posture, release
+4. Keep the diff narrow. Do not mix behavior, dependency posture, release
    metadata, formatting, binding refreshes, and automation cleanup unless the
    task requires it.
-4. Add or update focused tests for behavior changes, especially changes that
+5. Add or update focused tests for behavior changes, especially changes that
    affect platform gates, path semantics, or generated bindings.
-5. Run checks that match the risk of the change; use
+6. Run checks that match the risk of the change; use
    [CONTRIBUTING.md](CONTRIBUTING.md) for local command expectations. If a
    relevant check is skipped, explain why in the PR.
-6. Update README, crate docs, guardrails, or runbooks when public behavior,
+7. Update README, crate docs, guardrails, or runbooks when public behavior,
    compatibility claims, target support, MSRV, dependency policy, or release
    process changes.
 
