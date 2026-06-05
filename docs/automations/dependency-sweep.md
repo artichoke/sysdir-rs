@@ -49,8 +49,15 @@ action instead of Corepack.
 
 Start every run by reviewing open Dependabot pull requests. If a Dependabot pull
 request is mechanical, aligned with the dependency posture, and passing CI, it
-may be moved to auto-merge. Leave risky updates for human review with a short
-comment explaining why.
+must be merged as routine maintenance. Leave a short automation-authored comment
+before taking action so the decision is visible in the pull request timeline.
+Prefer enabling auto-merge when required checks are still pending or when branch
+protection requires the platform to complete the merge. If auto-merge cannot be
+enabled because GitHub reports that the pull request is already clean, merge it
+directly with the expected head SHA. Do not leave a clean mechanical Dependabot
+pull request open only because the auto-merge API path was unavailable.
+
+Leave risky updates for human review with a short comment explaining why.
 
 For automation-owned updates:
 
