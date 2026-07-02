@@ -1,5 +1,5 @@
 [tools]
-node = "24.17.0"
+node = "24.18.0"
 # Rust intentionally tracks the stable channel for this Rust library.
 rust = { version = "stable", profile = "minimal", components = "clippy,rustfmt" }
 zizmor = "1.26.1"
