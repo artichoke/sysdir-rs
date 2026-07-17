@@ -5,7 +5,7 @@ rust = { version = "stable", profile = "minimal", components = "clippy,rustfmt" 
 zizmor = "1.26.1"
 
 "cargo:bindgen-cli" = "0.72.1"
-"cargo:cargo-deny" = "0.19.9"
+"cargo:cargo-deny" = "0.20.2"
 
 [hooks]
 postinstall = "corepack enable"
