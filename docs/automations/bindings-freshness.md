@@ -41,17 +41,27 @@ Generate fresh bindgen output from the current SDK with:
 bindgen --use-core \
   --allowlist-function 'sysdir.*' \
   --allowlist-type 'sysdir.*' \
+  --blocklist-type sysdir_search_path_enumeration_state \
   --allowlist-var 'PATH_MAX' \
-  --rustified-enum 'sysdir.*' \
+  --default-enum-style rust_non_exhaustive \
+  --constified-enum sysdir_search_path_domain_mask_t \
+  --no-prepend-enum-name \
   cext/sysdir.h
 ```
 
 Compare the generated API surface with `src/sys.rs`. The checked-in file
-contains repository-local review edits such as the license header,
-`#[non_exhaustive]`, and the opaque enumeration state helper. Do not blindly
-overwrite those edits. If bindgen discovers new constants, types, function
-signatures, or generated attributes, update `src/sys.rs` deliberately and
-preserve the local review edits unless they are no longer correct.
+contains repository-local review edits such as the license header and the opaque
+enumeration state helper. Do not blindly overwrite those edits. To refresh
+`src/sys.rs`, run bindgen with the flags above, keep the repository license
+header, and keep the opaque `sysdir_search_path_enumeration_state` wrapper. The
+directory constants are intentionally generated as a non-exhaustive Rust enum,
+while `sysdir_search_path_domain_mask_t` is intentionally generated as bitmask
+constants plus a `c_uint` type alias. Do not replace the enum flags above with
+broad `--rustified-enum 'sysdir.*'`; that changes the domain mask into an enum
+instead of preserving its bitmask API. If bindgen discovers new constants,
+types, function signatures, or generated attributes, update `src/sys.rs`
+deliberately and preserve the local review edits unless they are no longer
+correct.
 
 Regenerate the bundled man page with:
 
