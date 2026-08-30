@@ -151,6 +151,12 @@ sysdir-rs binds directly to `libSystem` with vendored bindings in
 [`src/sys.rs`](src/sys.rs). Treat that file as checked-in source; changes to the
 generated bindings should be rare and reviewed carefully.
 
+## Publishing
+
+Maintainers publish releases through crates.io trusted publishing. See
+[`docs/publishing.md`](docs/publishing.md) for the trust configuration, release
+procedure, and failure-recovery guidance.
+
 ## Updating Dependencies
 
 ### Rust Crates
