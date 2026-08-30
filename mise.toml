@@ -2,7 +2,7 @@
 node = "24.19.0"
 # Rust intentionally tracks the stable channel for this Rust library.
 rust = { version = "stable", profile = "minimal", components = "clippy,rustfmt" }
-zizmor = "1.28.0"
+zizmor = "1.29.0"
 
 "cargo:bindgen-cli" = "0.72.1"
 "cargo:cargo-deny" = "0.20.2"
@@ -12,6 +12,7 @@ postinstall = "corepack enable"
 
 [settings]
 experimental = true
+use_versions_host_track = false
 
 [env]
 _.path = ["{{config_root}}/node_modules/.bin"]
