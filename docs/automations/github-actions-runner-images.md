@@ -63,17 +63,20 @@ there is a documented compatibility reason to keep it.
 
 For `sysdir-rs`, macOS CI should normally include the latest two maintained
 macOS versions and both available CPU families when GitHub exposes stable labels
-for them. Avoid duplicate coverage created by combining `macos-latest` with the
-explicit label it currently aliases.
+for them. Avoid duplicate coverage created by combining a moving-default macOS
+label with the explicit label it currently aliases.
 
 For MSRV, lint, formatting, and documentation jobs, prefer a single explicit
-maintained macOS label. Do not let these jobs silently migrate through
-`macos-latest` unless the runbook is updated to make that an intentional test
-axis.
+maintained macOS label. Do not let these jobs silently migrate through a
+moving-default label.
 
-For non-Apple jobs, verify Ubuntu and Windows labels are still supported and not
-under announced retirement. Update only when the current labels are deprecated,
-retired, or no longer represent the intended coverage.
+All workflow jobs in this repository must use explicit maintained runner labels;
+moving-default labels are banned. For non-Apple jobs, verify Ubuntu and Windows
+labels are still supported and not under announced retirement. Ubuntu workflows
+must use an explicit current GA Ubuntu label and Windows workflows must use an
+explicit current GA Windows label. When a newer image becomes GA, migrate to its
+explicit label before the announced moving-default migration and update required
+status-check contexts as needed.
 
 ## Changes
 
