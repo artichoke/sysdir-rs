@@ -127,10 +127,10 @@ For off-target platforms:
 - Run tests that prove the crate is empty or returns the documented failure.
 - Ensure docs still build or are gated correctly.
 
-Prefer explicit runner labels when stable coverage matters. `ubuntu-latest`,
-`windows-latest`, and `macos-latest` are useful only when the goal is to follow
-GitHub's moving default. For MSRV, publish, docs, and platform-API coverage,
-explicit labels are easier to audit.
+Prefer explicit runner labels when stable coverage matters. Moving-default
+labels are useful only when the goal is to follow GitHub's moving default. For
+MSRV, publish, docs, and platform-API coverage, explicit labels are easier to
+audit.
 
 ## Dependency Ranges
 
