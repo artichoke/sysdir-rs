@@ -97,6 +97,14 @@ For automation-owned updates:
 - run formatting and relevant validation before opening or updating a pull
   request.
 
+Security scanner upgrades are security maintenance. Do not defer an eligible
+scanner release because it reports new findings. Keep the new audits enabled,
+remediate actionable findings in the same focused change, and rerun the upgraded
+scanner. If a finding appears to be a false positive or calls for a wider
+migration, keep the pin upgrade moving and document the finding for human
+review. Hold an update only when the scanner itself cannot be installed or run
+safely.
+
 ## Pull Requests
 
 Use one branch and one pull request per logical dependency domain. Pull requests
