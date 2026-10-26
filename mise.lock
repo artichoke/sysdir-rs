@@ -50,9 +50,9 @@ url_api = "https://api.github.com/repos/zizmorcore/zizmor/releases/assets/645467
 provenance = "github-attestations"
 
 [[tools."cargo:bindgen-cli"]]
-version = "0.72.1"
+version = "0.73.2"
 backend = "cargo:bindgen-cli"
-specifiers = ["0.72.1"]
+specifiers = ["0.73.2"]
 
 [[tools."cargo:cargo-deny"]]
 version = "0.20.2"
